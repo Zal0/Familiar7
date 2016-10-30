@@ -19,14 +19,20 @@ public class Player : MonoBehaviour {
 	void Start () {
 		transform.position = grid.GetPos (grid_x, grid_y);
 
-		tray = (GameObject.Instantiate (trayPrefab) as GameObject).transform;
-		GetTray ();
+		CreateTray ();
 
 		music.OnSneeze += OnSneeze;
 		sneezingRemainingTime = 0;
 	}
 
 	void OnSneeze() {
+		if (tray != null && tray.parent == trayPivot) {
+			tray.gameObject.AddComponent< Blinker > ();
+			tray.GetComponent< AudioSource > ().Play ();
+			Destroy (tray.gameObject, 2.0f);
+			tray.parent = null;
+			tray = null;
+		}
 		sneezingRemainingTime = music.timing;
 		normal.SetActive (false);
 		sneezing.SetActive (true);
@@ -67,8 +73,11 @@ public class Player : MonoBehaviour {
 					grid_x += progress_x;
 					grid_y += progress_y;
 					transform.position = grid.GetPos (grid_x, grid_y);
-					if (tray.parent != trayPivot) {
+					if (tray != null && tray.parent != trayPivot) {
 						GetTray ();
+					}
+					if (tray == null && grid_x == 0 && grid_y == 0) {
+						CreateTray ();
 					}
 				} else if (tile == 'x') {
 					Vector3 pos = grid.GetPos (grid_x + progress_x, grid_y + progress_y) + Vector3.up * 0.704f; 
@@ -78,6 +87,11 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+	void CreateTray() {
+		tray = (GameObject.Instantiate (trayPrefab) as GameObject).transform;
+		GetTray ();
+	}
+
 	void GetTray() {
 		tray.parent = trayPivot;
 		tray.localPosition = Vector3.zero;
@@ -85,7 +99,9 @@ public class Player : MonoBehaviour {
 	}
 
 	void ReleaseTray(Vector3 pos) {
-		tray.parent = null;
-		tray.position = pos;
+		if (tray != null) {
+			tray.parent = null;
+			tray.position = pos;
+		}
 	}
 }
