@@ -8,6 +8,8 @@ public class Music : MonoBehaviour {
 	public float timing;
 	private int note;
 
+	public event System.Action OnSneeze;
+
 	// Use this for initialization
 	void Start () {
 		StartCoroutine (Rhythm());
@@ -17,6 +19,10 @@ public class Music : MonoBehaviour {
 		while (true) {
 			yield return new WaitForSeconds (timing);
 			source.PlayOneShot (music[note % music.Length]);
+			if ((note % music.Length) == music.Length - 1 && OnSneeze != null) {
+				OnSneeze ();
+			}
+
 			note++;
 		}
 	}
