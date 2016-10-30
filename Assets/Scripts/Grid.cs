@@ -25,7 +25,7 @@ public class Grid : MonoBehaviour {
 		for (int x = 0; x < x_divs; ++x) {
 			for (int y = 0; y < y_divs; ++y) {
 				if (GetTileAt (x, y) == 'x') {
-					GameObject.Instantiate (tablePrefab, GetPos(x, y), Quaternion.identity);
+					GameObject.Instantiate (tablePrefab, GetPos(x, y), Quaternion.identity, transform);
 				}
 			}
 		}
