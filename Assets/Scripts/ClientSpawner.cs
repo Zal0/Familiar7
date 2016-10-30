@@ -26,7 +26,7 @@ public class ClientSpawner : MonoBehaviour {
 				Transform pivot = table.transform.Find ("ClientPivot");
 				GameObject.Instantiate (clientPrefab, pivot.position, pivot.rotation, pivot);
 
-				respawnTime -= respawnTime / 5.0f;
+				respawnTime -= 0.2f;
 				if (respawnTime < 2.0f)
 					respawnTime = 2.0f;
 			}
