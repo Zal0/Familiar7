@@ -25,14 +25,20 @@ public class Player : MonoBehaviour {
 		sneezingRemainingTime = 0;
 	}
 
-	void OnSneeze() {
-		if (tray != null && tray.parent == trayPivot) {
-			tray.gameObject.AddComponent< Blinker > ();
-			tray.GetComponent< AudioSource > ().Play ();
+	void DismissTray() {
+		if (tray != null) {
 			Destroy (tray.gameObject, 2.0f);
+			tray.gameObject.AddComponent< Blinker > ();
 			tray.parent = null;
 			tray = null;
 			grid.GenerateTray ();
+		}
+	}
+
+	void OnSneeze() {
+		if (tray != null && tray.parent == trayPivot) {
+			tray.GetComponent< AudioSource > ().Play ();
+			DismissTray ();
 		}
 		sneezingRemainingTime = music.timing;
 		normal.SetActive (false);
@@ -84,6 +90,12 @@ public class Player : MonoBehaviour {
 				} else if (tile == 'x') {
 					Vector3 pos = grid.GetPos (grid_x + progress_x, grid_y + progress_y) + Vector3.up * 0.704f; 
 					ReleaseTray (pos);
+
+					Client client = grid.tables [grid_x + progress_x, grid_y + progress_y].GetComponentInChildren< Client > ();
+					if (client != null && !client.destroyed) {
+						DismissTray ();
+						client.ServeDrinks ();
+					}
 				}
 			}
 		}
