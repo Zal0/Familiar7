@@ -48,7 +48,7 @@ public class Player : MonoBehaviour {
 					GetTray ();
 				}
 			} else if (tile == 'x') {
-				Vector3 pos = grid.GetPos (grid_x + progress_x, grid_y + progress_y) + Vector3.up * 0.4975f; 
+				Vector3 pos = grid.GetPos (grid_x + progress_x, grid_y + progress_y) + Vector3.up * 0.704f; 
 				ReleaseTray (pos);
 			}
 		}
