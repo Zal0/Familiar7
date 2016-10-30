@@ -17,7 +17,7 @@ public class Game : MonoBehaviour {
 			score ++;
 		} else {
 			reviews = Mathf.Clamp01 (reviews - 0.2f);
-			if (reviews == 0.0f) {
+			if (reviews <= 0.01f) {
 				UnityEngine.SceneManagement.SceneManager.LoadScene ("GameOver");
 			}
 		}
