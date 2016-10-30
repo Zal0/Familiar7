@@ -4,7 +4,7 @@ using System.Collections;
 public class Grid : MonoBehaviour {
 
 	string[] grid = {
-		".--------",
+		"---------",
 		".........",
 		".x.x.x.x.",
 		".........",
@@ -19,6 +19,10 @@ public class Grid : MonoBehaviour {
 	public float cell_size = 4;
 	public GameObject tablePrefab;
 
+	public GameObject trayPrefab;
+	[HideInInspector]public Transform tray;
+	public int tray_x;
+
 	void Start() {
 		int x_divs = grid [0].Length;
 		int y_divs = grid.Length;
@@ -29,6 +33,14 @@ public class Grid : MonoBehaviour {
 				}
 			}
 		}
+
+		GenerateTray ();
+	}
+
+	public void GenerateTray() {
+		tray = (GameObject.Instantiate (trayPrefab) as GameObject).transform;
+		tray_x = Random.Range (0, grid [0].Length);
+		tray.position = GetPos (tray_x, 0) + Vector3.up * 0.704f;
 	}
 
 	public char GetTileAt(int x, int y) {

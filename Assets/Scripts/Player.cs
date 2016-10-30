@@ -6,7 +6,6 @@ public class Player : MonoBehaviour {
 	public Grid grid;
 	public int grid_x, grid_y;
 	public Transform trayPivot;
-	public GameObject trayPrefab;
 	public Music music;
 
 	private Transform tray;
@@ -17,9 +16,10 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		transform.position = grid.GetPos (grid_x, grid_y);
+		grid_x = 0;
+		grid_y = 1;
 
-		CreateTray ();
+		transform.position = grid.GetPos (grid_x, grid_y);
 
 		music.OnSneeze += OnSneeze;
 		sneezingRemainingTime = 0;
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour {
 			Destroy (tray.gameObject, 2.0f);
 			tray.parent = null;
 			tray = null;
+			grid.GenerateTray ();
 		}
 		sneezingRemainingTime = music.timing;
 		normal.SetActive (false);
@@ -57,6 +58,10 @@ public class Player : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.DownArrow)) {
 				progress_y = -1;
 				transform.rotation = Quaternion.LookRotation (Vector3.back);
+
+				if (tray == null && grid_x == grid.tray_x && grid_y == 1) {
+					PickNewTray ();
+				}
 			}
 			if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 				progress_x = -1;
@@ -76,9 +81,6 @@ public class Player : MonoBehaviour {
 					if (tray != null && tray.parent != trayPivot) {
 						GetTray ();
 					}
-					if (tray == null && grid_x == 0 && grid_y == 0) {
-						CreateTray ();
-					}
 				} else if (tile == 'x') {
 					Vector3 pos = grid.GetPos (grid_x + progress_x, grid_y + progress_y) + Vector3.up * 0.704f; 
 					ReleaseTray (pos);
@@ -87,8 +89,8 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void CreateTray() {
-		tray = (GameObject.Instantiate (trayPrefab) as GameObject).transform;
+	void PickNewTray() {
+		tray = grid.tray;
 		GetTray ();
 	}
 
