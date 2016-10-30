@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
 
@@ -16,20 +16,27 @@ public class Grid : MonoBehaviour {
 		"........."
 	};
 
+	public GameObject[,] tables;
+	public List< GameObject > free_tables = new List< GameObject >();
+	public List< GameObject > busy_tables = new List< GameObject >();
+
 	public float cell_size = 4;
 	public GameObject tablePrefab;
 
 	public GameObject trayPrefab;
 	[HideInInspector]public Transform tray;
-	public int tray_x;
+	[HideInInspector]public int tray_x;
 
 	void Start() {
 		int x_divs = grid [0].Length;
 		int y_divs = grid.Length;
+		tables = new GameObject[x_divs, y_divs];
+
 		for (int x = 0; x < x_divs; ++x) {
 			for (int y = 0; y < y_divs; ++y) {
 				if (GetTileAt (x, y) == 'x') {
-					GameObject.Instantiate (tablePrefab, GetPos(x, y), Quaternion.identity, transform);
+					tables[x, y] = GameObject.Instantiate (tablePrefab, GetPos(x, y), Quaternion.identity, transform) as GameObject;
+					free_tables.Add (tables[x, y]);
 				}
 			}
 		}
