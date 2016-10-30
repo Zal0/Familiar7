@@ -2,10 +2,14 @@
 using System.Collections;
 
 public class Game : MonoBehaviour {
-	float score = 0;
+	public static int score = 0;
 	float reviews = 1.0f;
 	public PercentBar reviewsBar;
 	public UnityEngine.UI.Text scoreText;
+
+	void Start() {
+		score = 0;
+	}
 
 	public void ClientDone(bool happy) {
 		if(happy) {
@@ -14,7 +18,7 @@ public class Game : MonoBehaviour {
 		} else {
 			reviews = Mathf.Clamp01 (reviews - 0.2f);
 			if (reviews == 0.0f) {
-				//TODO: Game Over
+				UnityEngine.SceneManagement.SceneManager.LoadScene ("GameOver");
 			}
 		}
 	}
