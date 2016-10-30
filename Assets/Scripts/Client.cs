@@ -9,6 +9,10 @@ public class Client : MonoBehaviour {
 	public bool destroyed;
 	public PercentBar bar;
 
+	public AudioClip correct;
+	public AudioClip wrong;
+	public AudioSource source;
+
 	// Use this for initialization
 	void Start () {
 		remainigTime = waitTime;
@@ -22,6 +26,7 @@ public class Client : MonoBehaviour {
 		destroyed = true;	
 
 		GetComponentInChildren< MeshRenderer > ().material.color = served ? Color.green : Color.red;
+		source.PlayOneShot (served ? correct : wrong);
 	}
 
 	// Update is called once per frame
