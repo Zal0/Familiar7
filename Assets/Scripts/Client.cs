@@ -9,6 +9,8 @@ public class Client : MonoBehaviour {
 	public bool destroyed;
 	public PercentBar bar;
 
+	private Game game;
+
 	public AudioClip correct;
 	public AudioClip wrong;
 	public AudioSource source;
@@ -17,6 +19,7 @@ public class Client : MonoBehaviour {
 	void Start () {
 		remainigTime = waitTime;
 		grid = GameObject.FindObjectOfType< Grid > ();
+		game = GameObject.FindObjectOfType< Game > ();
 		destroyed = false;
 	}
 
@@ -27,6 +30,7 @@ public class Client : MonoBehaviour {
 
 		GetComponentInChildren< MeshRenderer > ().material.color = served ? Color.green : Color.red;
 		source.PlayOneShot (served ? correct : wrong);
+		game.ClientDone (served);
 	}
 
 	// Update is called once per frame

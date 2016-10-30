@@ -87,7 +87,7 @@ public class Player : MonoBehaviour {
 					if (tray != null && tray.parent != trayPivot) {
 						GetTray ();
 					}
-				} else if (tile == 'x') {
+				} else if (tile == 'x' && tray != null) {
 					Vector3 pos = grid.GetPos (grid_x + progress_x, grid_y + progress_y) + Vector3.up * 0.704f; 
 					ReleaseTray (pos);
 
