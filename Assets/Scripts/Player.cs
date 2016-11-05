@@ -27,10 +27,9 @@ public class Player : MonoBehaviour {
 		sneezingRemainingTime = 0;
 	}
 
-	void DismissTray() {
+	void DismissTray(bool animated) {
 		if (tray != null) {
-			Destroy (tray.gameObject, 2.0f);
-			tray.gameObject.AddComponent< Blinker > ();
+			tray.GetComponent< Tray > ().Dismiss(animated);
 			tray.parent = null;
 			tray = null;
 			grid.GenerateTray ();
@@ -39,8 +38,7 @@ public class Player : MonoBehaviour {
 
 	void OnSneeze() {
 		if (tray != null && tray.parent == trayPivot) {
-			tray.GetComponent< AudioSource > ().Play ();
-			DismissTray ();
+			DismissTray (true);
 		}
 		sneezingRemainingTime = music.timing;
 		normal.SetActive (false);
@@ -95,7 +93,7 @@ public class Player : MonoBehaviour {
 
 					Client client = grid.tables [grid_x + progress_x, grid_y + progress_y].GetComponentInChildren< Client > ();
 					if (client != null && !client.destroyed) {
-						DismissTray ();
+						DismissTray (false);
 						client.ServeDrinks ();
 					}
 				}
@@ -120,7 +118,7 @@ public class Player : MonoBehaviour {
 	void GetTray() {
 		tray.parent = trayPivot;
 		tray.localPosition = Vector3.zero;
-		tray.localRotation = Quaternion.identity;
+		tray.rotation = transform.rotation;
 	}
 
 	void ReleaseTray(Vector3 pos) {
