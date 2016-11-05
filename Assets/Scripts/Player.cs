@@ -14,6 +14,8 @@ public class Player : MonoBehaviour {
 	public GameObject sneezing;
 	private float sneezingRemainingTime;
 
+	public AudioSource fx;
+
 	// Use this for initialization
 	void Start () {
 		grid_x = 0;
@@ -87,6 +89,7 @@ public class Player : MonoBehaviour {
 					if (tray != null && tray.parent != trayPivot) {
 						GetTray ();
 					}
+					fx.Play ();
 				} else if (tile == 'x' && tray != null) {
 					Vector3 pos = grid.GetPos (grid_x + progress_x, grid_y + progress_y) + Vector3.up * 0.704f; 
 					ReleaseTray (pos);
