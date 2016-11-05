@@ -85,7 +85,6 @@ public class Player : MonoBehaviour {
 				if (tile == '.') {
 					grid_x += progress_x;
 					grid_y += progress_y;
-					transform.position = grid.GetPos (grid_x, grid_y);
 					if (tray != null && tray.parent != trayPivot) {
 						GetTray ();
 					}
@@ -102,6 +101,15 @@ public class Player : MonoBehaviour {
 				}
 			}
 		}
+
+		Vector3 p = Vector3.Lerp (transform.position, grid.GetPos (grid_x, grid_y), 0.3f);
+		p.y = Mathf.Abs(Mathf.Sin(Mod(transform.position.x, grid.cell_size) / grid.cell_size * Mathf.PI)) * 0.6f;
+		p.y += Mathf.Abs(Mathf.Sin(Mod(transform.position.z - grid.cell_size * 0.5f, grid.cell_size) / grid.cell_size * Mathf.PI)) * 0.6f;
+		transform.position = p;
+	}
+
+	float Mod(float a, float b) {
+		return a - b * (int)(a / b);
 	}
 
 	void PickNewTray() {
